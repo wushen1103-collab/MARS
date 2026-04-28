@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "admet-shift-reliability"
+version = "0.1.0"
+description = "Experiment code for multi-anchor reliability analysis in ADMET/toxicity prediction under distribution shift."
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+    "pandas",
+    "scikit-learn",
+    "scipy",
+    "rdkit",
+    "tqdm",
+]
+
+[project.optional-dependencies]
+tdc = ["PyTDC"]
+neural = ["torch", "torch-geometric"]
+chemprop = ["chemprop"]
+smiles = ["transformers"]
+plot = ["matplotlib"]
+dev = ["pytest"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
