@@ -41,7 +41,7 @@ def make_molecular_weight_reverse_split(smiles: list[str], y: np.ndarray, seed: 
     return {"train": train_idx, "valid": valid_idx, "test": test_idx}
 
 
-def make_umap_split(x: np.ndarray, y: np.ndarray, seed: int) -> dict[str, np.ndarray]:
+def make_pca_cluster_split(x: np.ndarray, y: np.ndarray, seed: int) -> dict[str, np.ndarray]:
     reducer = PCA(n_components=min(10, x.shape[1]), random_state=seed)
     emb = reducer.fit_transform(x)
     labels = KMeans(n_clusters=5, random_state=seed, n_init=10).fit_predict(emb)
@@ -53,13 +53,23 @@ def make_umap_split(x: np.ndarray, y: np.ndarray, seed: int) -> dict[str, np.nda
     return {"train": train_idx, "valid": valid_idx, "test": test_idx}
 
 
-def make_lohi_split(x: np.ndarray, y: np.ndarray, seed: int) -> dict[str, np.ndarray]:
+def make_fingerprint_density_split(x: np.ndarray, y: np.ndarray, seed: int) -> dict[str, np.ndarray]:
     density = x.sum(axis=1)
     order = np.argsort(density)
     test_idx = order[: int(len(order) * 0.2)]
     train_pool = order[int(len(order) * 0.2) :]
     train_idx, valid_idx = random_train_valid(train_pool, y, seed)
     return {"train": train_idx, "valid": valid_idx, "test": test_idx}
+
+
+def make_umap_split(x: np.ndarray, y: np.ndarray, seed: int) -> dict[str, np.ndarray]:
+    """Compatibility alias for fixed outputs generated before the split was renamed."""
+    return make_pca_cluster_split(x, y, seed)
+
+
+def make_lohi_split(x: np.ndarray, y: np.ndarray, seed: int) -> dict[str, np.ndarray]:
+    """Compatibility alias for fixed outputs generated before the split was renamed."""
+    return make_fingerprint_density_split(x, y, seed)
 
 
 def split_usable(split: dict[str, np.ndarray], y: np.ndarray) -> bool:
@@ -74,9 +84,9 @@ def run_task(task_cfg: dict, seed: int, rf_n_jobs: int | None) -> list[dict]:
     smiles = df["smiles"].tolist()
     x = morgan_fingerprint_matrix(smiles)
     splitters = {
-        "umap": make_umap_split,
+        "pca_cluster": make_pca_cluster_split,
         "molecular_weight_reverse": make_molecular_weight_reverse_split,
-        "lohi": make_lohi_split,
+        "fingerprint_density": make_fingerprint_density_split,
     }
     rows = []
     for split_name, splitter in splitters.items():

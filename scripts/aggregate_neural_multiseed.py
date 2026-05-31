@@ -142,6 +142,10 @@ def parse_csv_ints(value: str) -> list[int]:
     return [int(item.strip()) for item in value.split(",") if item.strip()]
 
 
+def parse_csv_strings(value: str) -> list[str]:
+    return [item.strip() for item in value.split(",") if item.strip()]
+
+
 def write_outputs(rows: list[dict], missing: list[dict], output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     rows_df = pd.DataFrame(rows)
@@ -163,19 +167,21 @@ def main() -> None:
     parser.add_argument("--base-output", type=Path, default=DEFAULT_BASE_OUTPUT)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_AGGREGATE_DIR)
     parser.add_argument("--seeds", default="1,2,3")
+    parser.add_argument("--core-splits", default=",".join(CORE_SPLITS))
     parser.add_argument("--wait", action="store_true")
     parser.add_argument("--expected-files", type=int, default=189)
     parser.add_argument("--poll-seconds", type=int, default=120)
     args = parser.parse_args()
 
     seeds = parse_csv_ints(args.seeds)
+    core_splits = parse_csv_strings(args.core_splits)
     while True:
         rows, missing = collect_rows(
             base_output=args.base_output,
             seeds=seeds,
             tasks=TASKS,
             core_models=CORE_MODELS,
-            core_splits=CORE_SPLITS,
+            core_splits=core_splits,
             include_anchor=True,
         )
         result_files = len(list(args.base_output.glob("**/*.result.json"))) if args.base_output.exists() else 0

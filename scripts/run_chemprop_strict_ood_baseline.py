@@ -25,9 +25,9 @@ from admet_shift_reliability.datasets import load_task_frame  # noqa: E402
 from admet_shift_reliability.features import morgan_fingerprint_matrix  # noqa: E402
 from run_chemprop_baseline import TASKS, select_task  # noqa: E402
 from run_realistic_ood_splits import (  # noqa: E402
-    make_lohi_split,
+    make_fingerprint_density_split,
     make_molecular_weight_reverse_split,
-    make_umap_split,
+    make_pca_cluster_split,
     split_usable,
 )
 
@@ -42,10 +42,10 @@ def filter_valid_smiles(df: pd.DataFrame) -> pd.DataFrame:
 
 def make_split(split_name: str, smiles: list[str], y: np.ndarray, seed: int) -> dict[str, np.ndarray]:
     x = morgan_fingerprint_matrix(smiles)
-    if split_name == "umap":
-        return make_umap_split(x, y, seed)
-    if split_name == "lohi":
-        return make_lohi_split(x, y, seed)
+    if split_name in {"pca_cluster", "umap"}:
+        return make_pca_cluster_split(x, y, seed)
+    if split_name in {"fingerprint_density", "lohi"}:
+        return make_fingerprint_density_split(x, y, seed)
     if split_name == "molecular_weight_reverse":
         return make_molecular_weight_reverse_split(smiles, y, seed)
     raise ValueError(f"Unsupported strict split: {split_name}")
@@ -65,7 +65,11 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", required=True)
     parser.add_argument("--label", required=True)
-    parser.add_argument("--strict-split", choices=["umap", "lohi", "molecular_weight_reverse"], required=True)
+    parser.add_argument(
+        "--strict-split",
+        choices=["fingerprint_density", "molecular_weight_reverse", "pca_cluster", "lohi", "umap"],
+        required=True,
+    )
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--gpu", type=int, default=0)
     parser.add_argument("--epochs", type=int, default=20)

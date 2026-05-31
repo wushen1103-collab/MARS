@@ -19,7 +19,7 @@ TASKS = [
     ("herg", "hERG"),
     ("dili", "DILI"),
 ]
-STRICT_SPLITS = ["umap", "lohi", "molecular_weight_reverse"]
+STRICT_SPLITS = ["fingerprint_density", "molecular_weight_reverse", "pca_cluster"]
 
 
 def shell_quote(path: Path | str) -> str:

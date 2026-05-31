@@ -27,9 +27,9 @@ from admet_shift_reliability.anchor_reliability import (  # noqa: E402
 from admet_shift_reliability.features import morgan_fingerprint_matrix  # noqa: E402
 from run_leakage_shift_uq_bootstrap import nearest_train_similarity  # noqa: E402
 from run_realistic_ood_splits import (  # noqa: E402
-    make_lohi_split,
+    make_fingerprint_density_split,
     make_molecular_weight_reverse_split,
-    make_umap_split,
+    make_pca_cluster_split,
     split_usable,
 )
 from run_reliability_benchmark import (  # noqa: E402
@@ -168,10 +168,10 @@ def ensemble_probs(models: list[RandomForestClassifier], x: np.ndarray) -> np.nd
 
 
 def make_split(split_name: str, smiles: list[str], x: np.ndarray, y: np.ndarray, seed: int) -> dict[str, np.ndarray]:
-    if split_name == "umap":
-        return make_umap_split(x, y, seed)
-    if split_name == "lohi":
-        return make_lohi_split(x, y, seed)
+    if split_name in {"pca_cluster", "umap"}:
+        return make_pca_cluster_split(x, y, seed)
+    if split_name in {"fingerprint_density", "lohi"}:
+        return make_fingerprint_density_split(x, y, seed)
     if split_name == "molecular_weight_reverse":
         return make_molecular_weight_reverse_split(smiles, y, seed)
     raise ValueError(f"Unknown strict OOD split: {split_name}")
@@ -256,7 +256,7 @@ def run_one(task_cfg: dict, split_name: str, seed: int, rf_n_jobs: int, ensemble
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--splits", default="umap,lohi,molecular_weight_reverse")
+    parser.add_argument("--splits", default="fingerprint_density,molecular_weight_reverse,pca_cluster")
     parser.add_argument("--seeds", default="42,43,44")
     parser.add_argument("--rf-n-jobs", type=int, default=32)
     parser.add_argument("--ensemble-size", type=int, default=5)

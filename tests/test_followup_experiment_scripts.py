@@ -8,7 +8,7 @@ def test_followup_experiment_scripts_cover_all_seven_recommended_blocks():
     expected = {
         "run_activity_cliff_novelty.py": ["novelty_bucket_metrics.csv", "activity_cliff_metrics.csv"],
         "run_calibration_benchmark.py": ["calibration_results.csv", "temperature", "isotonic"],
-        "run_realistic_ood_splits.py": ["umap", "molecular_weight_reverse", "lohi"],
+        "run_realistic_ood_splits.py": ["pca_cluster", "molecular_weight_reverse", "fingerprint_density"],
         "run_selective_screening_utility.py": ["selective_coverage_metrics.csv", "enrichment_metrics.csv"],
         "run_strong_descriptor_baselines.py": ["chemprop_rdkit_proxy", "xgb_rdkit"],
         "run_conformer_sensitivity.py": ["num_conformers", "conformer_sensitivity_results.csv"],
@@ -32,7 +32,7 @@ def test_followup_scripts_guard_against_observed_runtime_regressions():
 
 def test_topjournal_followup_scripts_cover_new_reviewer_gaps():
     expected = {
-        "run_strict_ood_model_matrix.py": ["umap", "lohi", "molecular_weight_reverse", "rf_ensemble", "learned_shift_error_model"],
+        "run_strict_ood_model_matrix.py": ["pca_cluster", "fingerprint_density", "molecular_weight_reverse", "rf_ensemble", "learned_shift_error_model"],
         "run_conformal_risk_control.py": ["conformal_set_metrics.csv", "risk_control_metrics.csv", "classwise_calibration_metrics.csv"],
         "run_cross_dataset_transfer.py": ["TRANSFER_PAIRS", "herg_endpoint", "bbb_endpoint"],
         "run_pretrained_smiles_baselines.py": ["DeepChem/ChemBERTa-77M-MTR", "pretrained_smiles_baseline_metrics.csv"],
@@ -45,3 +45,9 @@ def test_topjournal_followup_scripts_cover_new_reviewer_gaps():
         source = (ROOT / "scripts" / script_name).read_text()
         for marker in markers:
             assert marker in source, f"{script_name} missing marker {marker}"
+
+
+def test_strict_ood_legacy_aliases_remain_compatible_with_fixed_artifacts():
+    source = (ROOT / "scripts" / "run_realistic_ood_splits.py").read_text()
+    assert "make_umap_split" in source
+    assert "make_lohi_split" in source
