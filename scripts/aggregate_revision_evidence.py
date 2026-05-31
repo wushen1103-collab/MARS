@@ -101,6 +101,10 @@ def strict_paths(root: Path) -> list[Path]:
     return original + revision
 
 
+def recursive_metric_paths(input_dirs: list[Path], filename: str) -> list[Path]:
+    return sorted(path for input_dir in input_dirs for path in input_dir.glob(f"**/{filename}"))
+
+
 def add_mean_std(frame: pd.DataFrame, group_cols: list[str], output: Path) -> None:
     if frame.empty:
         return
@@ -113,19 +117,47 @@ def add_mean_std(frame: pd.DataFrame, group_cols: list[str], output: Path) -> No
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "revision_20260531" / "aggregate")
+    parser.add_argument(
+        "--strict-input-dir",
+        type=Path,
+        action="append",
+        default=[],
+        help="Directory containing strict OOD metrics, recursively searched; may be repeated.",
+    )
+    parser.add_argument(
+        "--transfer-input-dir",
+        type=Path,
+        default=ROOT / "outputs" / "revision_20260531" / "transfer_shards",
+    )
+    parser.add_argument(
+        "--external-input-dir",
+        type=Path,
+        default=ROOT / "outputs" / "revision_20260531" / "external_admet_shards",
+    )
+    parser.add_argument("--reliability-input", type=Path)
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
-    strict_metric_files = [path for path in strict_paths(ROOT) if path.name == "strict_ood_model_metrics.csv"]
-    strict_conf_files = [path for path in strict_paths(ROOT) if path.name == "strict_ood_confidence_metrics.csv"]
-    transfer_files = sorted((ROOT / "outputs" / "revision_20260531" / "transfer_shards").glob("seed*/cross_dataset_transfer_metrics.csv"))
-    external_files = sorted((ROOT / "outputs" / "revision_20260531" / "external_admet_shards").glob("seed*/external_admet_probe_metrics.csv"))
+    if args.strict_input_dir:
+        strict_metric_files = recursive_metric_paths(args.strict_input_dir, "strict_ood_model_metrics.csv")
+        strict_conf_files = recursive_metric_paths(args.strict_input_dir, "strict_ood_confidence_metrics.csv")
+    else:
+        legacy_strict_files = strict_paths(ROOT)
+        strict_metric_files = [path for path in legacy_strict_files if path.name == "strict_ood_model_metrics.csv"]
+        strict_conf_files = [path for path in legacy_strict_files if path.name == "strict_ood_confidence_metrics.csv"]
+    transfer_files = sorted(args.transfer_input_dir.glob("seed*/cross_dataset_transfer_metrics.csv"))
+    external_files = sorted(args.external_input_dir.glob("seed*/external_admet_probe_metrics.csv"))
 
     strict = read_many(strict_metric_files)
     strict_conf = read_many(strict_conf_files)
     transfer = read_many(transfer_files)
     external = read_seed_shards(external_files)
-    reliability = pd.read_csv(ROOT / "outputs" / "reliability_benchmark_expanded_multiseed" / "all_results.csv")
+    reliability_input = args.reliability_input
+    if reliability_input is None:
+        revision_reliability = ROOT / "outputs" / "revision_20260531" / "reliability_benchmark_aggregate" / "all_results.csv"
+        legacy_reliability = ROOT / "outputs" / "reliability_benchmark_expanded_multiseed" / "all_results.csv"
+        reliability_input = revision_reliability if revision_reliability.exists() else legacy_reliability
+    reliability = pd.read_csv(reliability_input)
 
     strict.to_csv(args.output_dir / "strict_ood_all_seeds.csv", index=False)
     strict_conf.to_csv(args.output_dir / "strict_ood_confidence_all_seeds.csv", index=False)

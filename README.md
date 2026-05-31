@@ -105,21 +105,37 @@ reliability models fitted from validation predictions.
 Run the additional revision analyses:
 
 ```bash
+for seed in 42 43 44 45 46; do
+  python scripts/run_reliability_benchmark.py \
+    --seed "${seed}" \
+    --output-dir "outputs/revision_20260531/reliability_benchmark_shards/seed${seed}"
+  python scripts/run_cross_dataset_transfer.py \
+    --seed "${seed}" \
+    --output-dir "outputs/revision_20260531/transfer_shards/seed${seed}"
+  python scripts/run_external_admet_probe.py \
+    --seed "${seed}" \
+    --output-dir "outputs/revision_20260531/external_admet_shards/seed${seed}"
+  python scripts/run_conformal_risk_control.py \
+    --seed "${seed}" \
+    --output-dir "outputs/revision_20260531/conformal_risk_control_shards/seed${seed}"
+done
+python scripts/aggregate_reliability_benchmark_multiseed.py
 python scripts/run_anchor_stratified_analysis.py \
   --seeds 42,43,44,45,46 \
-  --output-dir outputs/anchor_stratified_analysis
+  --output-dir outputs/revision_20260531/anchor_stratified_v2
 python scripts/summarize_anchor_stratified_analysis.py \
-  --input-dir outputs/anchor_stratified_analysis
+  --input-dir outputs/revision_20260531/anchor_stratified_v2
 python scripts/run_retrieval_scalability.py \
-  --output-dir outputs/retrieval_scalability
+  --output-dir outputs/revision_20260531/retrieval_scalability
 ```
 
-When the fixed rerun shards are placed under
-`outputs/revision_20260531/`, generate the statistical summaries and
-verify their row-level coverage with:
+After the fixed rerun shards and scaffold reliability summaries are in
+place, generate the statistical summaries and verify their row-level
+coverage with:
 
 ```bash
-python scripts/aggregate_revision_evidence.py
+python scripts/aggregate_revision_evidence.py \
+  --strict-input-dir outputs/strict_ood_model_matrix
 python scripts/aggregate_component_evidence.py
 python scripts/aggregate_conformal_risk_control_multiseed.py
 python scripts/verify_revision_evidence.py
