@@ -38,7 +38,7 @@ def test_topjournal_followup_scripts_cover_new_reviewer_gaps():
         "run_pretrained_smiles_baselines.py": ["DeepChem/ChemBERTa-77M-MTR", "pretrained_smiles_baseline_metrics.csv"],
         "run_chemprop_strict_ood_baseline.py": ["chemprop_strict_ood", "strict-split"],
         "run_anchor_case_studies.py": ["anchor_rescue", "top_anchors"],
-        "launch_topjournal_followup_batch.py": ["HF_ENDPOINT", "chemprop_strict_ood_metrics_20260422"],
+        "launch_topjournal_followup_batch.py": ["HF_ENDPOINT", "chemprop_strict_ood_metrics"],
     }
 
     for script_name, markers in expected.items():

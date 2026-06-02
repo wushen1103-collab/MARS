@@ -9,7 +9,7 @@ import pandas as pd
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_INPUT_DIR = ROOT / "outputs" / "neural_calibration_true_20260422"
+DEFAULT_INPUT_DIR = ROOT / "outputs" / "neural_calibration_true"
 DEFAULT_OUTPUT_DIR = DEFAULT_INPUT_DIR / "analysis"
 
 LOWER_IS_BETTER = ["brier", "ece", "nll", "risk_coverage_auc"]

@@ -21,12 +21,12 @@ def main() -> None:
     parser.add_argument(
         "--input-dir",
         type=Path,
-        default=ROOT / "outputs" / "revision_20260531" / "reliability_benchmark_shards",
+        default=ROOT / "outputs" / "revision" / "reliability_benchmark_shards",
     )
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=ROOT / "outputs" / "revision_20260531" / "reliability_benchmark_aggregate",
+        default=ROOT / "outputs" / "revision" / "reliability_benchmark_aggregate",
     )
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)

@@ -9,8 +9,8 @@ import pandas as pd
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_BASE_OUTPUT = ROOT / "outputs" / "neural_multiseed_20260421"
-DEFAULT_AGGREGATE_DIR = ROOT / "outputs" / "neural_multiseed_20260421_aggregate"
+DEFAULT_BASE_OUTPUT = ROOT / "outputs" / "neural_multiseed"
+DEFAULT_AGGREGATE_DIR = ROOT / "outputs" / "neural_multiseed_aggregate"
 
 TASKS = [
     ("bbbp", "p_np"),

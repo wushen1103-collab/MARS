@@ -158,7 +158,7 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--n-jobs", type=int, default=32)
     parser.add_argument("--alpha", type=float, default=3.0)
-    parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "activity_cliff_targeted_20260422")
+    parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "activity_cliff_targeted")
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
 

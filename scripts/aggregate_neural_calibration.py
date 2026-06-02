@@ -21,8 +21,8 @@ if str(SRC) not in sys.path:
 from admet_shift_reliability.anchor_reliability import error_detection_auroc, risk_coverage_auc
 
 
-DEFAULT_PREDICTION_DIR = ROOT / "outputs" / "neural_prediction_dump_20260422" / "predictions"
-DEFAULT_OUTPUT_DIR = ROOT / "outputs" / "neural_calibration_true_20260422"
+DEFAULT_PREDICTION_DIR = ROOT / "outputs" / "neural_prediction_dump" / "predictions"
+DEFAULT_OUTPUT_DIR = ROOT / "outputs" / "neural_calibration_true"
 REQUIRED_COLUMNS = {
     "dataset",
     "label",

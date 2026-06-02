@@ -272,7 +272,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--chemprop-root", type=Path, default=None)
-    parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "chemprop_metrics_20260422")
+    parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "chemprop_metrics")
     parser.add_argument("--generate-valid-preds", action="store_true")
     args = parser.parse_args()
     chemprop_root = args.chemprop_root

@@ -9,10 +9,10 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-BASE_OUTPUT = "outputs/neural_prediction_dump_20260422"
+BASE_OUTPUT = "outputs/neural_prediction_dump"
 PREDICTION_DIR = f"{BASE_OUTPUT}/predictions"
-CALIBRATION_OUTPUT = "outputs/neural_calibration_true_20260422"
-LOG_DIR = "logs/neural_prediction_dump_20260422"
+CALIBRATION_OUTPUT = "outputs/neural_calibration_true"
+LOG_DIR = "logs/neural_prediction_dump"
 
 TASKS = [
     ("bbbp", "p_np"),

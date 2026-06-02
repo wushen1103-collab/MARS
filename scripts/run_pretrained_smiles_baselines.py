@@ -137,7 +137,7 @@ def main() -> None:
     parser.add_argument("--batch-size", type=int, default=128)
     parser.add_argument("--max-length", type=int, default=256)
     parser.add_argument("--rf-n-jobs", type=int, default=24)
-    parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "pretrained_smiles_baselines_20260422")
+    parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "pretrained_smiles_baselines")
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
     cache_dir = args.output_dir / "cache"

@@ -8,13 +8,13 @@ import pandas as pd
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_OUTPUT_DIR = ROOT / "outputs" / "paper_claim_audit_20260422"
+DEFAULT_OUTPUT_DIR = ROOT / "outputs" / "paper_claim_audit"
 TASK_KEYS = ["dataset", "label"]
 METRICS = ["auroc", "auprc", "brier", "ece"]
 
 
 def load_candidate_pool(root: Path) -> pd.DataFrame:
-    path = root / "outputs" / "neural_calibration_true_20260422" / "analysis" / "candidate_reliability_table.csv"
+    path = root / "outputs" / "neural_calibration_true" / "analysis" / "candidate_reliability_table.csv"
     candidates = pd.read_csv(path)
     keep = TASK_KEYS + ["source", "candidate", "model", "calibration", "split"] + METRICS
     out = candidates[keep].copy()
@@ -25,7 +25,7 @@ def load_candidate_pool(root: Path) -> pd.DataFrame:
 
 def load_baseline_pool(root: Path) -> pd.DataFrame:
     rows = []
-    chemprop_path = root / "outputs" / "chemprop_metrics_20260422" / "chemprop_calibration_metrics.csv"
+    chemprop_path = root / "outputs" / "chemprop_metrics" / "chemprop_calibration_metrics.csv"
     if chemprop_path.exists():
         chemprop = pd.read_csv(chemprop_path)
         chemprop = chemprop.loc[chemprop["split"].eq("scaffold")]
@@ -64,7 +64,7 @@ def load_baseline_pool(root: Path) -> pd.DataFrame:
                 }
             )
 
-    aggregate_path = root / "outputs" / "neural_multiseed_20260421_aggregate_seed1_4" / "aggregate_mean_std.csv"
+    aggregate_path = root / "outputs" / "neural_multiseed_aggregate_seed1_4" / "aggregate_mean_std.csv"
     if aggregate_path.exists():
         aggregate = pd.read_csv(aggregate_path)
         aggregate = aggregate.loc[aggregate["split"].eq("scaffold")]

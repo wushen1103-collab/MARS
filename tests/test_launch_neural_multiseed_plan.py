@@ -25,7 +25,7 @@ def test_default_multiseed_plan_covers_core_and_anchor_without_overwriting_main_
     assert sum(1 for job in jobs if job.stage == "core_scaffold") == 84
     assert sum(1 for job in jobs if job.stage == "anchor_scaffold") == 21
     assert sum(1 for job in jobs if job.stage == "core_random") == 84
-    assert all("outputs/neural_multiseed_20260421" in job.output_dir for job in jobs)
+    assert all("outputs/neural_multiseed" in job.output_dir for job in jobs)
     assert all("outputs/gin_baseline" not in job.command for job in jobs)
     assert all("outputs/schnet_baseline" not in job.command for job in jobs)
     assert all(f"seed{job.seed}" in job.output_dir for job in jobs)

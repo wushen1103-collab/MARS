@@ -57,7 +57,7 @@ def main() -> None:
     parser.add_argument("--neighbors", type=int, default=10)
     parser.add_argument("--repeats", type=int, default=3)
     parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "retrieval_scalability_20260531")
+    parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "retrieval_scalability")
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
 

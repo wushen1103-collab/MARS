@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 LOWER_IS_BETTER = {"brier", "ece", "risk_coverage_auc", "selective_error_50", "selective_error_80"}
 
 
-def bootstrap_effect(values: np.ndarray, seed: int = 20260531) -> tuple[float, float]:
+def bootstrap_effect(values: np.ndarray, seed: int = 42) -> tuple[float, float]:
     rng = np.random.default_rng(seed)
     boot = np.asarray([np.mean(rng.choice(values, size=len(values), replace=True)) for _ in range(10000)])
     return float(np.quantile(boot, 0.025)), float(np.quantile(boot, 0.975))
@@ -57,8 +57,8 @@ def mean_std(frame: pd.DataFrame, group_cols: list[str], metrics: list[str]) -> 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input-dir", type=Path, default=ROOT / "outputs" / "revision_20260531" / "aggregate")
-    parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "revision_20260531" / "component_evidence")
+    parser.add_argument("--input-dir", type=Path, default=ROOT / "outputs" / "revision" / "aggregate")
+    parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "revision" / "component_evidence")
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
 

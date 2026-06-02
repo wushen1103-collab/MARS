@@ -55,7 +55,7 @@ def paired_cluster_stats(
     value_col: str,
     model_col: str = "model",
     n_boot: int = 10000,
-    seed: int = 20260531,
+    seed: int = 42,
 ) -> dict:
     sub = frame[frame[model_col].isin([first, second])].copy()
     wide = sub.pivot_table(index=pair_cols, columns=model_col, values=value_col, aggfunc="first").dropna()
@@ -96,8 +96,8 @@ def paired_cluster_stats(
 
 
 def strict_paths(root: Path) -> list[Path]:
-    original = sorted((root / "outputs" / "strict_ood_model_matrix_shards_20260422").glob("seed4[2-4]_*/*metrics.csv"))
-    revision = sorted((root / "outputs" / "revision_20260531" / "strict_ood_shards").glob("seed4[5-6]_*/*metrics.csv"))
+    original = sorted((root / "outputs" / "strict_ood_model_matrix_shards").glob("seed4[2-4]_*/*metrics.csv"))
+    revision = sorted((root / "outputs" / "revision" / "strict_ood_shards").glob("seed4[5-6]_*/*metrics.csv"))
     return original + revision
 
 
@@ -116,7 +116,7 @@ def add_mean_std(frame: pd.DataFrame, group_cols: list[str], output: Path) -> No
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "revision_20260531" / "aggregate")
+    parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "revision" / "aggregate")
     parser.add_argument(
         "--strict-input-dir",
         type=Path,
@@ -127,12 +127,12 @@ def main() -> None:
     parser.add_argument(
         "--transfer-input-dir",
         type=Path,
-        default=ROOT / "outputs" / "revision_20260531" / "transfer_shards",
+        default=ROOT / "outputs" / "revision" / "transfer_shards",
     )
     parser.add_argument(
         "--external-input-dir",
         type=Path,
-        default=ROOT / "outputs" / "revision_20260531" / "external_admet_shards",
+        default=ROOT / "outputs" / "revision" / "external_admet_shards",
     )
     parser.add_argument("--reliability-input", type=Path)
     args = parser.parse_args()
@@ -154,7 +154,7 @@ def main() -> None:
     external = read_seed_shards(external_files)
     reliability_input = args.reliability_input
     if reliability_input is None:
-        revision_reliability = ROOT / "outputs" / "revision_20260531" / "reliability_benchmark_aggregate" / "all_results.csv"
+        revision_reliability = ROOT / "outputs" / "revision" / "reliability_benchmark_aggregate" / "all_results.csv"
         legacy_reliability = ROOT / "outputs" / "reliability_benchmark_expanded_multiseed" / "all_results.csv"
         reliability_input = revision_reliability if revision_reliability.exists() else legacy_reliability
     reliability = pd.read_csv(reliability_input)

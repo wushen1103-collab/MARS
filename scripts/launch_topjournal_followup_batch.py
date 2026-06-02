@@ -58,23 +58,23 @@ def build_run_script(gpus: list[int], log_dir: Path, rf_n_jobs: int, chemprop_ep
         "echo \"TOPJOURNAL_BATCH_START $(date -Is)\" | tee \"$LOG_DIR/manifest.log\"",
         "",
         "$PY scripts/run_strict_ood_model_matrix.py --seeds 42,43,44 --rf-n-jobs "
-        f"{rf_n_jobs} --ensemble-size 5 --output-dir outputs/strict_ood_model_matrix_20260422 "
+        f"{rf_n_jobs} --ensemble-size 5 --output-dir outputs/strict_ood_model_matrix "
         "> \"$LOG_DIR/strict_ood_model_matrix.log\" 2>&1 &",
         "PID_STRICT=$!",
         "$PY scripts/run_conformal_risk_control.py --seed 42 --rf-n-jobs "
-        f"{rf_n_jobs} --output-dir outputs/conformal_risk_control_20260422 "
+        f"{rf_n_jobs} --output-dir outputs/conformal_risk_control "
         "> \"$LOG_DIR/conformal_risk_control.log\" 2>&1 &",
         "PID_CONFORMAL=$!",
         "$PY scripts/run_cross_dataset_transfer.py --seed 42 --rf-n-jobs "
-        f"{rf_n_jobs} --output-dir outputs/cross_dataset_transfer_20260422 "
+        f"{rf_n_jobs} --output-dir outputs/cross_dataset_transfer "
         "> \"$LOG_DIR/cross_dataset_transfer.log\" 2>&1 &",
         "PID_CROSS=$!",
         "$PY scripts/run_anchor_case_studies.py --seed 42 --rf-n-jobs "
-        f"{rf_n_jobs} --output-dir outputs/anchor_case_studies_20260422 "
+        f"{rf_n_jobs} --output-dir outputs/anchor_case_studies "
         "> \"$LOG_DIR/anchor_case_studies.log\" 2>&1 &",
         "PID_CASES=$!",
         f"CUDA_VISIBLE_DEVICES={gpu_for_pretrained} $PY scripts/run_pretrained_smiles_baselines.py --gpu 0 --batch-size 128 --rf-n-jobs 24 "
-        "--output-dir outputs/pretrained_smiles_baselines_20260422 "
+        "--output-dir outputs/pretrained_smiles_baselines "
         "> \"$LOG_DIR/pretrained_smiles_baselines.log\" 2>&1 &",
         "PID_PRETRAIN=$!",
         "echo strict_ood_model_matrix=$PID_STRICT >> \"$LOG_DIR/manifest.log\"",
@@ -115,7 +115,7 @@ def build_run_script(gpus: list[int], log_dir: Path, rf_n_jobs: int, chemprop_ep
             "wait " + " ".join(wait_pids),
             "echo \"TOPJOURNAL_BATCH_AGGREGATE $(date -Is)\" >> \"$LOG_DIR/manifest.log\"",
             "$PY scripts/aggregate_chemprop_metrics.py --chemprop-root outputs/chemprop_strict_ood "
-            "--output-dir outputs/chemprop_strict_ood_metrics_20260422 --generate-valid-preds "
+            "--output-dir outputs/chemprop_strict_ood_metrics --generate-valid-preds "
             "> \"$LOG_DIR/aggregate_chemprop_strict_ood.log\" 2>&1",
             "echo \"TOPJOURNAL_BATCH_DONE $(date -Is)\" >> \"$LOG_DIR/manifest.log\"",
         ]
@@ -130,7 +130,7 @@ def main() -> None:
     parser.add_argument("--gpus", default="0,1,2,3,7")
     parser.add_argument("--rf-n-jobs", type=int, default=32)
     parser.add_argument("--chemprop-epochs", type=int, default=20)
-    parser.add_argument("--log-dir", type=Path, default=ROOT / "logs" / "topjournal_followup_20260422")
+    parser.add_argument("--log-dir", type=Path, default=ROOT / "logs" / "topjournal_followup")
     parser.add_argument("--start", action="store_true")
     args = parser.parse_args()
     gpus = [int(item.strip()) for item in args.gpus.split(",") if item.strip()]

@@ -270,7 +270,7 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--rf-n-jobs", type=int, default=32)
     parser.add_argument("--n-boot", type=int, default=1000)
-    parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "leakage_shift_uq_bootstrap_20260422")
+    parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "leakage_shift_uq_bootstrap")
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
 

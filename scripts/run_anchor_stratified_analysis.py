@@ -118,7 +118,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--seeds", default="42,43,44,45,46")
     parser.add_argument("--rf-n-jobs", type=int, default=32)
-    parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "anchor_stratified_analysis_20260531")
+    parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "anchor_stratified_analysis")
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
 

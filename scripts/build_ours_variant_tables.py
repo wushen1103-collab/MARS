@@ -19,7 +19,7 @@ VARIANT_MAP = {
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--neural-aggregate", type=Path, default=ROOT / "outputs" / "neural_multiseed_20260421_aggregate_seed1_4" / "aggregate_mean_std.csv")
+    parser.add_argument("--neural-aggregate", type=Path, default=ROOT / "outputs" / "neural_multiseed_aggregate_seed1_4" / "aggregate_mean_std.csv")
     parser.add_argument("--reliability-aggregate", type=Path, default=ROOT / "outputs" / "reliability_benchmark_expanded_multiseed" / "aggregate_mean_std.csv")
     parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "ours_variant_tables")
     args = parser.parse_args()

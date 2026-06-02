@@ -24,7 +24,7 @@ def write_json(path: Path, payload: dict):
 
 def test_collects_core_and_anchor_variant_rows_and_aggregates(tmp_path):
     mod = load_aggregator_module()
-    base = tmp_path / "outputs" / "neural_multiseed_20260421"
+    base = tmp_path / "outputs" / "neural_multiseed"
 
     write_json(
         base / "gin_seed1" / "bbbp__p_np__scaffold.result.json",

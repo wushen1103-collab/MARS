@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-LOG_DIR = ROOT / "logs" / "full_followup_20260422"
+LOG_DIR = ROOT / "logs" / "full_followup"
 TASKS = [
     ("bbbp", "p_np"),
     ("clintox", "CT_TOX"),
@@ -119,7 +119,7 @@ def render_cpu_worker(python_bin: Path, gpu_pid_file: Path, cpu_workers: int) ->
             "p1=$!",
             f"\"$PYTHON_BIN\" scripts/run_activity_cliff_targeted.py --n-jobs {cpu_workers} > {shlex.quote(str(LOG_DIR / 'activity_cliff_targeted.log'))} 2>&1 &",
             "p2=$!",
-            f"\"$PYTHON_BIN\" scripts/run_conformer_sensitivity.py --n-jobs 24 --conformer-workers {cpu_workers} --num-conformers 1,3,5 --output-dir outputs/conformer_sensitivity_full_20260422 > {shlex.quote(str(LOG_DIR / 'conformer_sensitivity_full.log'))} 2>&1 &",
+            f"\"$PYTHON_BIN\" scripts/run_conformer_sensitivity.py --n-jobs 24 --conformer-workers {cpu_workers} --num-conformers 1,3,5 --output-dir outputs/conformer_sensitivity_full > {shlex.quote(str(LOG_DIR / 'conformer_sensitivity_full.log'))} 2>&1 &",
             "p3=$!",
             f"\"$PYTHON_BIN\" scripts/run_external_admet_probe.py --rf-n-jobs {cpu_workers} > {shlex.quote(str(LOG_DIR / 'external_admet_probe.log'))} 2>&1 &",
             "p4=$!",
@@ -131,7 +131,7 @@ def render_cpu_worker(python_bin: Path, gpu_pid_file: Path, cpu_workers: int) ->
             f"while read -r pid script; do if [ -n \"$pid\" ]; then wait \"$pid\" 2>/dev/null || true; fi; done < {shlex.quote(str(gpu_pid_file))}",
             "export CUDA_VISIBLE_DEVICES=0",
             f"\"$PYTHON_BIN\" scripts/aggregate_chemprop_metrics.py --generate-valid-preds > {shlex.quote(str(LOG_DIR / 'aggregate_chemprop_metrics.log'))} 2>&1",
-            f"\"$PYTHON_BIN\" scripts/build_internal_sota_claim_audit.py --output-dir outputs/paper_claim_audit_with_chemprop_20260422 > {shlex.quote(str(LOG_DIR / 'paper_claim_audit_with_chemprop.log'))} 2>&1",
+            f"\"$PYTHON_BIN\" scripts/build_internal_sota_claim_audit.py --output-dir outputs/paper_claim_audit_with_chemprop > {shlex.quote(str(LOG_DIR / 'paper_claim_audit_with_chemprop.log'))} 2>&1",
             "echo CPU_FOLLOWUPS_DONE $(date '+%F %T %z')",
             "",
         ]

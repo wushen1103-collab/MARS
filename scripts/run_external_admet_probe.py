@@ -124,7 +124,7 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--rf-n-jobs", type=int, default=32)
     parser.add_argument("--datasets", default=",".join(ADME_CLASSIFICATION_CANDIDATES))
-    parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "external_admet_probe_20260422")
+    parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "external_admet_probe")
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
 

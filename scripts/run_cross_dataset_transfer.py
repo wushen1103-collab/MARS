@@ -197,7 +197,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--rf-n-jobs", type=int, default=32)
-    parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "cross_dataset_transfer_20260422")
+    parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "cross_dataset_transfer")
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
 

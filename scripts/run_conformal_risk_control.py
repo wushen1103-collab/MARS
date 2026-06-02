@@ -208,7 +208,7 @@ def main() -> None:
     parser.add_argument("--rf-n-jobs", type=int, default=32)
     parser.add_argument("--alphas", default="0.05,0.1,0.2")
     parser.add_argument("--target-risks", default="0.05,0.1,0.2")
-    parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "conformal_risk_control_20260422")
+    parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "conformal_risk_control")
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
     alphas = [float(item) for item in args.alphas.split(",") if item.strip()]

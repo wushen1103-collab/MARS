@@ -22,7 +22,7 @@ def main() -> None:
     parser.add_argument(
         "--input-dir",
         type=Path,
-        default=ROOT / "outputs" / "revision_20260531" / "anchor_stratified_v2",
+        default=ROOT / "outputs" / "revision" / "anchor_stratified",
     )
     parser.add_argument("--output-dir", type=Path)
     args = parser.parse_args()

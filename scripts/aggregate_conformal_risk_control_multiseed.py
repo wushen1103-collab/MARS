@@ -39,7 +39,7 @@ def paired_effect(
     metric: str,
     pair_cols: list[str],
     model_col: str = "model",
-    seed: int = 20260531,
+    seed: int = 42,
 ) -> dict:
     sub = frame[frame[model_col].isin([first, second])].copy()
     wide = sub.pivot_table(index=pair_cols, columns=model_col, values=metric, aggfunc="first").dropna()
@@ -68,12 +68,12 @@ def main() -> None:
     parser.add_argument(
         "--input-dir",
         type=Path,
-        default=ROOT / "outputs" / "revision_20260531" / "conformal_risk_control_shards",
+        default=ROOT / "outputs" / "revision" / "conformal_risk_control_shards",
     )
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=ROOT / "outputs" / "revision_20260531" / "conformal_risk_control_aggregate",
+        default=ROOT / "outputs" / "revision" / "conformal_risk_control_aggregate",
     )
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)

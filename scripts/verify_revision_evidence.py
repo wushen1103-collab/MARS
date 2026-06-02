@@ -6,7 +6,7 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "outputs" / "revision_20260531"
+OUT = ROOT / "outputs" / "revision"
 
 
 def csv_rows(path: Path) -> int:
@@ -22,8 +22,8 @@ def main() -> None:
         "reliability_rows": (csv_rows(OUT / "aggregate" / "reliability_mean_std.csv"), 5),
         "paired_statistical_comparisons": (csv_rows(OUT / "aggregate" / "paired_cluster_bootstrap_stats.csv"), 30),
         "scalability_bank_sizes": (csv_rows(OUT / "retrieval_scalability" / "retrieval_scalability_summary.csv"), 6),
-        "anchor_stratified_metric_rows": (csv_rows(OUT / "anchor_stratified_v2" / "anchor_stratified_metrics.csv"), 630),
-        "anchor_stratified_benefit_rows": (csv_rows(OUT / "anchor_stratified_v2" / "anchor_stratified_benefits.csv"), 270),
+        "anchor_stratified_metric_rows": (csv_rows(OUT / "anchor_stratified" / "anchor_stratified_metrics.csv"), 630),
+        "anchor_stratified_benefit_rows": (csv_rows(OUT / "anchor_stratified" / "anchor_stratified_benefits.csv"), 270),
         "neural_scaffold_rows": (csv_rows(OUT / "neural_multiseed_seed1_5_scaffold_aggregate" / "all_results.csv"), 245),
         "neural_scaffold_missing_files": (
             json.loads((OUT / "neural_multiseed_seed1_5_scaffold_aggregate" / "summary.json").read_text())["num_missing_files"],

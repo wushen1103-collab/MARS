@@ -9,8 +9,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-BASE_OUTPUT = "outputs/neural_multiseed_20260421"
-LOG_DIR = "logs/neural_multiseed_20260421"
+BASE_OUTPUT = "outputs/neural_multiseed"
+LOG_DIR = "logs/neural_multiseed"
 
 TASKS = [
     ("bbbp", "p_np"),

@@ -39,7 +39,7 @@ def test_true_neural_calibration_aggregator_has_required_calibrators_and_outputs
 def test_neural_prediction_dump_launcher_targets_true_neural_outputs():
     source = (ROOT / "scripts" / "launch_neural_prediction_dump.py").read_text()
 
-    assert "neural_prediction_dump_20260422" in source
+    assert "neural_prediction_dump" in source
     assert "--prediction-dir" in source
     assert "--mc-dropout-passes" in source
     assert "gin" in source
